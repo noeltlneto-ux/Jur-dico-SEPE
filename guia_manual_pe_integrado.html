@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Interativo de Cadastramento - PE-Integrado</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#0a3651',
+                        },
+                        pe: {
+                            blue: '#1e3a8a',
+                            yellow: '#eab308',
+                            green: '#16a34a',
+                            red: '#dc2626'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Print Styles */
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; color: black !important; }
+            .content-area { margin-left: 0 !important; width: 100% !important; }
+        }
+
+        /* Tooltip style for hotspots */
+        .hotspot-pulse {
+            box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7);
+            animation: pulse-yellow 2s infinite;
+        }
+        @keyframes pulse-yellow {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(234, 179, 8, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); }
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 font-sans antialiased transition-colors duration-200">
+
+    <div id="app" class="flex flex-col min-h-screen">
+
+        <!-- HEADER / TOP NAV -->
+        <header class="no-print bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 transition-colors duration-200 shadow-sm">
+            <div class="px-4 lg:px-8 py-3 flex items-center justify-between gap-4">
+                
+                <!-- Logo & Title -->
+                <div class="flex items-center gap-3">
+                    <button id="toggle-sidebar" class="md:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <div class="bg-gradient-to-tr from-blue-700 to-sky-500 text-white p-2 rounded-lg font-bold text-lg flex items-center justify-center w-10 h-10 shadow-md">
+                            PE
+                        </div>
+                        <div>
+                            <h1 class="font-bold text-lg leading-tight text-slate-900 dark:text-white">PE-INTEGRADO</h1>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Guia Interativo de Cadastramento</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Global Search Input -->
+                <div class="hidden md:flex flex-1 max-w-md mx-4 relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="global-search" placeholder="Buscar no guia (ex: aditivo, dotação, erro, reajuste)..." 
+                           class="w-full pl-9 pr-4 py-1.5 text-sm rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                </div>
+
+                <!-- Actions Right -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Support Link Button -->
+                    <a href="https://suportecompras.pe.gov.br" target="_blank" rel="noopener noreferrer" 
+                       class="flex items-center gap-2 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-semibold rounded-lg shadow transition-all duration-150 animate-pulse hover:animate-none">
+                        <i class="fa-solid fa-headset"></i>
+                        <span class="hidden sm:inline">Abrir Chamado / Suporte</span>
+                    </a>
+
+                    <!-- Print Button -->
+                    <button id="btn-print" onclick="window.print()" title="Imprimir Guia" 
+                            class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <i class="fa-solid fa-print"></i>
+                    </button>
+
+                    <!-- Theme Switcher -->
+                    <button id="theme-toggle" title="Alternar Tema" 
+                            class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <i id="theme-icon" class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reading Progress Bar -->
+            <div class="w-full bg-slate-200 dark:bg-slate-700 h-1">
+                <div id="reading-progress" class="bg-brand-500 h-1 w-0 transition-all duration-150"></div>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT CONTAINER -->
+        <div class="flex-1 flex overflow-hidden">
+
+            <!-- SIDEBAR NAVIGATION -->
+            <aside id="sidebar" class="no-print w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex-shrink-0 flex flex-col justify-between absolute md:relative z-20 h-[calc(100vh-57px)] transition-transform duration-300 -translate-x-full md:translate-x-0">
+                <div class="p-4 overflow-y-auto space-y-6">
+                    
+                    <!-- Menu Module List -->
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-2">Módulos do Guia</span>
+                        <nav class="mt-2 space-y-1">
+                            <button data-tab="modulo-a" class="nav-btn active w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-left">
+                                <i class="fa-solid fa-file-signature text-brand-500 w-5"></i>
+                                <span>1. Contrato Original</span>
+                            </button>
+
+                            <button data-tab="modulo-b" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors text-left">
+                                <i class="fa-solid fa-file-circle-plus text-amber-500 w-5"></i>
+                                <span>2. Termo Aditivo (TA)</span>
+                            </button>
+
+                            <button data-tab="modulo-c" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors text-left">
+                                <i class="fa-solid fa-calculator text-emerald-500 w-5"></i>
+                                <span>3. Apostilamento</span>
+                            </button>
+
+                            <button data-tab="modulo-d" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors text-left">
+                                <i class="fa-solid fa-triangle-exclamation text-rose-500 w-5"></i>
+                                <span>4. Resolução de Erros</span>
+                            </button>
+
+                            <button data-tab="modulo-e" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors text-left">
+                                <i class="fa-solid fa-list-check text-indigo-500 w-5"></i>
+                                <span>5. Checklist de Validação</span>
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Color Legend -->
+                    <div class="bg-slate-50 dark:bg-slate-700/30 p-3 rounded-xl border border-slate-200 dark:border-slate-700/50">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-2">Legenda Visual</span>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-pe-blue flex-shrink-0"></span>
+                                <span><strong>AZUL:</strong> Orientação/Ação</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-pe-yellow flex-shrink-0"></span>
+                                <span><strong>AMARELO:</strong> Atenção/Alerta</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-pe-green flex-shrink-0"></span>
+                                <span><strong>VERDE:</strong> Sucesso/Conferido</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-pe-red flex-shrink-0"></span>
+                                <span><strong>VERMELHO:</strong> Erro/Suporte</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Support Info -->
+                    <div class="p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-xl">
+                        <div class="flex items-start gap-2 text-red-700 dark:text-red-400">
+                            <i class="fa-solid fa-circle-info mt-0.5"></i>
+                            <div>
+                                <p class="text-xs font-semibold">Problemas na migração?</p>
+                                <p class="text-[11px] mt-0.5 text-red-600 dark:text-red-300">Não crie registros duplicados! Abra um chamado imediato no portal.</p>
+                                <a href="https://suportecompras.pe.gov.br" target="_blank" class="text-[11px] font-bold underline mt-1 block hover:text-red-800">suportecompras.pe.gov.br &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer Sidebar -->
+                <div class="p-4 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-400 text-center">
+                    Governo do Estado de Pernambuco<br>
+                    <span>PE-Integrado v2026.1</span>
+                </div>
+            </aside>
+
+            <!-- OVERLAY FOR MOBILE SIDEBAR -->
+            <div id="sidebar-overlay" class="no-print fixed inset-0 bg-slate-900/50 z-10 hidden md:hidden"></div>
+
+            <!-- MAIN CONTENT DISPLAY -->
+            <main class="flex-1 overflow-y-auto p-4 lg:p-8 space-y-8" id="content-area">
+
+                <!-- TOP WARNING BANNER -->
+                <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-5 rounded-2xl shadow-lg relative overflow-hidden">
+                    <div class="absolute right-0 top-0 opacity-10 translate-x-4 -translate-y-4 pointer-events-none">
+                        <i class="fa-solid fa-shield-halved text-9xl"></i>
+                    </div>
+                    <div class="relative z-10 max-w-3xl">
+                        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold mb-3">
+                            <i class="fa-solid fa-lightbulb text-amber-400"></i> Guia Operacional de Apoio
+                        </div>
+                        <h2 class="text-2xl font-bold">Manual de Gestão Contratual PE-Integrado</h2>
+                        <p class="text-slate-300 text-sm mt-1">
+                            Roteiro prático com simulações visuais e verificações passo a passo para registro de Contratos Originais, Termos Aditivos e Apostilamentos.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- MODULE A: CONTRATO ORIGINAL -->
+                <section id="modulo-a" class="tab-content space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-4">
+                        <div>
+                            <span class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider">Módulo A</span>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Cadastro do Contrato Original (ou Empenho Substitutivo)</h2>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-semibold">
+                            <i class="fa-solid fa-circle-info"></i> Instrumento Inicial
+                        </span>
+                    </div>
+
+                    <!-- Steps Timeline -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        
+                        <!-- Step 1 -->
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm relative hover:border-brand-500 transition-all">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold flex items-center justify-center text-sm">1</span>
+                                <span class="text-xs font-mono text-slate-400">Navegação</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-1">Acessar o Módulo</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300">
+                                No menu principal, vá em: <br>
+                                <span class="font-semibold text-slate-800 dark:text-slate-200">Gestão de Contratos &rarr; Contrato &rarr; Meus Contratos</span>.
+                            </p>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm relative hover:border-brand-500 transition-all">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold flex items-center justify-center text-sm">2</span>
+                                <span class="text-xs font-mono text-slate-400">Filtros</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-1">Filtrar Consulta</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300">
+                                Unidade Gestora: <span class="font-semibold">"SECRETARIA DE PROJETOS ESTRATÉGICOS"</span><br>
+                                Filtro Exibir: <span class="font-semibold">"TODOS OS CONTRATOS"</span>.
+                            </p>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm relative hover:border-brand-500 transition-all">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold flex items-center justify-center text-sm">3</span>
+                                <span class="text-xs font-mono text-slate-400">Ação Inicial</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-1">Escolher a Espécie</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300">
+                                Clique em <span class="font-semibold text-brand-600 dark:text-brand-400">"Incluir Novo Contrato"</span> e selecione entre <em>"Contrato"</em> ou <em>"Empenho Substitutivo"</em>.
+                            </p>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm relative hover:border-brand-500 transition-all">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold flex items-center justify-center text-sm">4</span>
+                                <span class="text-xs font-mono text-slate-400">Dados Gerais</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-1">Preenchimento Geral</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300">
+                                Informe: Contratado por, Objeto, Vigência (início/fim), Modalidade, Tipo de Contrato, Valor Total, CNPJ/CPF e Dotação.
+                            </p>
+                        </div>
+
+                        <!-- Step 5 -->
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm relative hover:border-brand-500 transition-all">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold flex items-center justify-center text-sm">5</span>
+                                <span class="text-xs font-mono text-slate-400">Itens / Valores</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-1">Vincular Itens e Cronograma</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300">
+                                Associe os bens/serviços do catálogo com preços unitários. Verifique cronograma físico-financeiro e fonte de recursos.
+                            </p>
+                        </div>
+
+                        <!-- Step 6 -->
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm relative hover:border-brand-500 transition-all">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold flex items-center justify-center text-sm">6</span>
+                                <span class="text-xs font-mono text-slate-400">Conclusão</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-1">Anexar e Efetivar</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300">
+                                Inclua os PDFs legais obrigatoriamente. Salve e confira se o status mudou para <span class="font-bold text-emerald-600">"Efetivado"</span>.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- Interactive Visual Mockup Section -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-slate-900 dark:text-white text-lg flex items-center gap-2">
+                                <i class="fa-solid fa-desktop text-brand-500"></i>
+                                Simulação Visual da Tela: Inclusão do Contrato
+                            </h3>
+                            <span class="text-xs text-slate-500 bg-slate-100 dark:bg-slate-700 px-2.5 py-1 rounded-full">Passe o mouse / Clique nos pontos para detalhes</span>
+                        </div>
+
+                        <!-- MOCKUP UI SYSTEM SIMULATION -->
+                        <div class="border border-slate-300 dark:border-slate-600 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-900 font-sans relative">
+                            
+                            <!-- Window Bar -->
+                            <div class="bg-slate-800 text-slate-200 px-4 py-2 flex items-center justify-between text-xs">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                                    <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                                    <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                                    <span class="ml-2 font-mono text-slate-400">PE-INTEGRADO // Gestão de Contratos &gt; Novo Contrato</span>
+                                </div>
+                                <span class="bg-slate-700 px-2 py-0.5 rounded text-[10px]">VERSÃO SIMULADA</span>
+                            </div>
+
+                            <!-- Mockup Header Tabs -->
+                            <div class="bg-slate-200 dark:bg-slate-800 border-b border-slate-300 dark:border-slate-700 px-4 pt-2 flex gap-1 text-xs">
+                                <span class="bg-white dark:bg-slate-900 px-4 py-2 rounded-t font-semibold text-brand-600 border-t-2 border-brand-500">Dados Gerais</span>
+                                <span class="px-4 py-2 text-slate-500">Itens</span>
+                                <span class="px-4 py-2 text-slate-500">Partes</span>
+                                <span class="px-4 py-2 text-slate-500">Anexos</span>
+                            </div>
+
+                            <!-- Mockup Content Body -->
+                            <div class="p-6 space-y-4 text-xs relative bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+                                
+                                <!-- Hotspot 1: UG -->
+                                <div class="absolute top-4 right-6 z-10">
+                                    <button onclick="showHotspotInfo('Unidade Gestora', 'Sempre confirme se está operando sob a UG correta antes de registrar o instrumento formal.')" 
+                                            class="hotspot-pulse w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center font-bold text-xs shadow-lg hover:scale-110 transition-transform">
+                                        !
+                                    </button>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label class="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Unidade Gestora *</label>
+                                        <input type="text" readonly value="SECRETARIA DE PROJETOS ESTRATÉGICOS" class="w-full p-2 border rounded bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600">
+                                    </div>
+                                    <div>
+                                        <label class="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Tipo de Instrumento *</label>
+                                        <select class="w-full p-2 border rounded bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600">
+                                            <option>Contrato</option>
+                                            <option>Empenho Substitutivo</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Número do Registro</label>
+                                        <input type="text" readonly value="CT000123/2026-SEPE" class="w-full p-2 border rounded bg-slate-100 dark:bg-slate-800 font-mono">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Objeto Resumido *</label>
+                                    <textarea readonly rows="2" class="w-full p-2 border rounded bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600">Registro de preço para futura e eventual aquisição de notebooks e estações de trabalho para atender a demanda de modernização tecnológica.</textarea>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    <div>
+                                        <label class="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Data de Início *</label>
+                                        <input type="text" readonly value="14/08/2025" class="w-full p-2 border rounded bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600">
+                                    </div>
+                                    <div>
+                                        <label class="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Data de Encerramento *</label>
+                                        <input type="text" readonly value="13/08/2028" class="w-full p-2 border rounded bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600">
+                                    </div>
+                                    <div>
+                                        <label class="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Valor Total Inicial (R$) *</label>
+                                        <input type="text" readonly value="244.800,00" class="w-full p-2 border rounded bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 font-bold border-emerald-300 dark:border-emerald-700">
+                                    </div>
+                                    <div>
+                                        <label class="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Contratada (CNPJ) *</label>
+                                        <input type="text" readonly value="12.345.678/0001-90 - TREER TECNOLOGY" class="w-full p-2 border rounded bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600">
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-700">
+                                    <button class="px-3 py-1.5 bg-slate-200 dark:bg-slate-700 rounded text-slate-700 dark:text-slate-200 font-medium">Salvar Rascunho</button>
+                                    <button class="px-4 py-1.5 bg-emerald-600 text-white rounded font-bold hover:bg-emerald-700">Efetivar Contrato</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- MODULE B: TERMO ADITIVO -->
+                <section id="modulo-b" class="tab-content space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-4">
+                        <div>
+                            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Módulo B</span>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Cadastro de Termo Aditivo (TA)</h2>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 text-xs font-semibold">
+                            <i class="fa-solid fa-file-pen"></i> Alterações Qualitativas / Quantitativas / Vigência
+                        </span>
+                    </div>
+
+                    <!-- Flow Guidance Cards -->
+                    <div class="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 p-4 rounded-xl text-xs space-y-2">
+                        <p class="font-bold text-amber-900 dark:text-amber-300 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Atenção aos Limites Legais!
+                        </p>
+                        <p class="text-amber-800 dark:text-amber-200">
+                            Antes de iniciar o cadastramento no sistema, identifique a finalidade exata: acréscimo/supressão de valor ou quantidade, prorrogação de vigência ou alteração qualitativa. Certifique-se de que o percentual acumulado respeita os limites legais vigentes (ex: 25% para compras gerais ou até 50% para reformas, conforme a legislação de regência).
+                        </p>
+                    </div>
+
+                    <!-- Steps Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-amber-500 uppercase">Passo 1</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Acessar Novo Aditivo</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Menu: <span class="font-semibold">Gestão de Contratos &rarr; Aditivos &rarr; Novo Aditivo</span>.
+                            </p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-amber-500 uppercase">Passo 2</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Localizar Contrato-Mãe</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Pesquise pelo número de registro no PE-Integrado e confirme partes, objeto e vigência atual.
+                            </p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-amber-500 uppercase">Passo 3</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Selecionar a Modalidade</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Escolha a modalidade exata: <em class="font-semibold">Acréscimo/Supressão, Prorrogação de Prazo, etc.</em>
+                            </p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-amber-500 uppercase">Passo 4</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Atualizar Prazos / Quantitativos</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Edite a planilha de itens para acréscimos ou ajuste a data de encerramento em caso de prorrogativa.
+                            </p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-amber-500 uppercase">Passo 5</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Anexar Documentação Legal</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Anexe justificativa, Parecer Jurídico PGE, DDC Aditivo e comprovantes exigidos pelo fluxo.
+                            </p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-amber-500 uppercase">Passo 6</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Revisar e Efetivar</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Verifique o valor global recalculado, confira publicações e finalize para mudar o status.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- Interactive Visual Simulation of Addendum Screen -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-slate-900 dark:text-white text-lg flex items-center gap-2">
+                                <i class="fa-solid fa-desktop text-amber-500"></i>
+                                Simulação Visual: Cadastro de Aditivo de Acréscimo (25%)
+                            </h3>
+                            <span class="text-xs text-slate-500 bg-slate-100 dark:bg-slate-700 px-2.5 py-1 rounded-full">Exemplo baseado no material oficial</span>
+                        </div>
+
+                        <!-- Addendum System Mockup -->
+                        <div class="border border-slate-300 dark:border-slate-600 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-900 font-sans text-xs">
+                            <div class="bg-slate-800 text-slate-200 px-4 py-2 flex justify-between items-center font-mono">
+                                <span>TERMO DE ACRÉSCIMO E SUPRESSÃO - PE-INTEGRADO</span>
+                                <span class="text-amber-400">Status: Em Configuração</span>
+                            </div>
+
+                            <div class="p-6 bg-white dark:bg-slate-900 space-y-4 text-slate-800 dark:text-slate-200">
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+                                    <div>
+                                        <span class="text-slate-400 block font-mono">Número do Aditivo</span>
+                                        <strong class="text-brand-600 dark:text-brand-400">TA_ACR001/2025-SEPE-510101</strong>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-400 block font-mono">Contrato de Origem</span>
+                                        <strong>LEG00037/2025-SEPE-510101</strong>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-400 block font-mono">Contratada</span>
+                                        <strong>TREER TECNOLOGY LTDA</strong>
+                                    </div>
+                                </div>
+
+                                <!-- Financial Changes Box -->
+                                <div class="p-4 bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-lg space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="font-bold text-amber-900 dark:text-amber-300 text-sm">Resumo do Reajuste de Quantitativo / Valor</h4>
+                                        <span class="px-2 py-0.5 bg-amber-200 dark:bg-amber-900 text-amber-800 dark:text-amber-200 font-bold rounded">
+                                            Acréscimo de 25,0000%
+                                        </span>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="p-2.5 bg-white dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
+                                            <span class="text-slate-500 block">Valor Anterior do Contrato</span>
+                                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300">R$ 244.800,00</span>
+                                        </div>
+                                        <div class="p-2.5 bg-white dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
+                                            <span class="text-slate-500 block">Valor do Aditivo</span>
+                                            <span class="text-sm font-bold text-amber-600 dark:text-amber-400">+ R$ 61.200,00</span>
+                                        </div>
+                                        <div class="p-2.5 bg-emerald-50 dark:bg-emerald-950/40 rounded border border-emerald-300 dark:border-emerald-700">
+                                            <span class="text-emerald-800 dark:text-emerald-300 block font-semibold">Novo Valor Global Resultante</span>
+                                            <span class="text-base font-extrabold text-emerald-700 dark:text-emerald-400">R$ 306.000,00</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Justification -->
+                                <div>
+                                    <label class="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Justificativa do Aditivo *</label>
+                                    <textarea readonly rows="2" class="w-full p-2 border rounded bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600 font-mono text-[11px]">Acréscimo de 25% (vinte e cinco por cento) ao valor inicial do contrato, após a implementação dos acréscimos quantitativos previstos na Cláusula Primeira. O valor total atualizado passa a ser de R$ 306.000,00.</textarea>
+                                </div>
+
+                                <div class="flex justify-end gap-2 pt-2">
+                                    <button class="px-3 py-1.5 bg-slate-200 dark:bg-slate-700 rounded text-slate-700 dark:text-slate-200">Cancelar</button>
+                                    <button class="px-4 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded">Confirmar &amp; Salvar Aditivo</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- MODULE C: APOSTILAMENTO -->
+                <section id="modulo-c" class="tab-content space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-4">
+                        <div>
+                            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Módulo C</span>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Cadastro de Apostilamento por Reajuste / Alteração Simples</h2>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
+                            <i class="fa-solid fa-calculator"></i> Sem alteração da essência contratual
+                        </span>
+                    </div>
+
+                    <!-- Checklist Before Start -->
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-folder-open text-emerald-500"></i> Documentos para Separar Antes do Cadastro
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            <div class="flex items-start gap-2 p-2 bg-slate-50 dark:bg-slate-700/40 rounded border border-slate-200 dark:border-slate-600">
+                                <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                                <span><strong>Nota Técnica / Memória de Cálculo:</strong> contendo percentual e novos preços unitários.</span>
+                            </div>
+                            <div class="flex items-start gap-2 p-2 bg-slate-50 dark:bg-slate-700/40 rounded border border-slate-200 dark:border-slate-600">
+                                <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                                <span><strong>Extrato do Índice Oficial:</strong> ex.: IPCA, IGPM, IBGE ou FGV correspondente.</span>
+                            </div>
+                            <div class="flex items-start gap-2 p-2 bg-slate-50 dark:bg-slate-700/40 rounded border border-slate-200 dark:border-slate-600">
+                                <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                                <span><strong>Termo de Apostilamento Assinado:</strong> pela autoridade competente.</span>
+                            </div>
+                            <div class="flex items-start gap-2 p-2 bg-slate-50 dark:bg-slate-700/40 rounded border border-slate-200 dark:border-slate-600">
+                                <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                                <span><strong>Demonstrativo de Reserva/Empenho:</strong> caso haja acréscimo orçamentário.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Steps Timeline -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-emerald-600 uppercase">1. Inclusão</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Abrir Módulo</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Vá em <span class="font-semibold">Gestão de Contratos &rarr; Apostilamento &rarr; Incluir Apostilamento</span>.
+                            </p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-emerald-600 uppercase">2. Seleção</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Localizar Contrato</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Pesquise pelo número do contrato ou processo licitatório e selecione o registro correto.
+                            </p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-emerald-600 uppercase">3. Dados Gerais</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Preencher Informações</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Selecione a finalidade (ex: Reajuste), a Data de Aplicação e a fundamentação legal.
+                            </p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-emerald-600 uppercase">4. Memória de Cálculo</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Atualizar Itens/Valores</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Aplique o percentual ou edite os novos valores unitários. Clique em <em>Calcular/Recalcular Total</em>.
+                            </p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-emerald-600 uppercase">5. Dotação</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Conferir Saldo Orçamentário</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Verifique a necessidade de empenho suplementar e insira o código da nova fonte/nota.
+                            </p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <span class="text-xs font-bold text-emerald-600 uppercase">6. Efetivação</span>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mt-1">Anexar e Finalizar</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                Faça o upload dos PDFs e clique em <span class="font-bold text-emerald-600">Efetivar</span> para homologar as alterações.
+                            </p>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- MODULE D: ERROS FREQUENTES & SUPORTE -->
+                <section id="modulo-d" class="tab-content space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-4">
+                        <div>
+                            <span class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider">Módulo D</span>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Resolução de Erros Frequentes e Abertura de Chamados</h2>
+                        </div>
+                        <a href="https://suportecompras.pe.gov.br" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-lg shadow transition-all">
+                            <i class="fa-solid fa-headset"></i> Ir para Portal de Suporte Oficial
+                        </a>
+                    </div>
+
+                    <!-- Search Filter inside Table -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+                        <div class="relative w-full md:w-96">
+                            <i class="fa-solid fa-filter absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="error-filter" placeholder="Filtrar erros (ex: dotação, data, centavos)..." 
+                                   class="w-full pl-9 pr-4 py-2 text-xs rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                        </div>
+                        <span class="text-xs text-slate-500">Exibindo erros mapeados no PE-Integrado</span>
+                    </div>
+
+                    <!-- Errors Interactive Table -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                                <thead class="bg-slate-100 dark:bg-slate-700/50 text-slate-800 dark:text-slate-200 font-bold uppercase text-[11px] tracking-wider border-b border-slate-200 dark:border-slate-700">
+                                    <tr>
+                                        <th class="p-3.5">Ocorrência / Mensagem de Erro</th>
+                                        <th class="p-3.5">Causa Provável</th>
+                                        <th class="p-3.5">Como Resolver / Ação Recomendada</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 dark:divide-slate-700" id="error-table-body">
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td class="p-3.5 font-bold text-rose-600 dark:text-rose-400">
+                                            <i class="fa-solid fa-circle-exclamation mr-1.5"></i>
+                                            Saldo da Dotação Insuficiente
+                                        </td>
+                                        <td class="p-3.5">O valor do reajuste/aditivo supera o saldo orçamentário vinculado no cadastro.</td>
+                                        <td class="p-3.5">Acesse a aba <em>Dotações</em> e inclua a reserva ou nota de empenho complementar antes de efetivar.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td class="p-3.5 font-bold text-rose-600 dark:text-rose-400">
+                                            <i class="fa-solid fa-circle-exclamation mr-1.5"></i>
+                                            Data retroativa não permitida
+                                        </td>
+                                        <td class="p-3.5">A data informada é anterior à data-base permitida para concessão do reajuste/aditivo.</td>
+                                        <td class="p-3.5">Verifique se a data de concessão respeita o interregno legal de 1 ano e corrija o campo na aba Informações Gerais.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td class="p-3.5 font-bold text-rose-600 dark:text-rose-400">
+                                            <i class="fa-solid fa-circle-exclamation mr-1.5"></i>
+                                            Divergência nos centavos do Valor Global
+                                        </td>
+                                        <td class="p-3.5">Arredondamento automático do sistema na multiplicação do percentual pelo valor unitário.</td>
+                                        <td class="p-3.5">Ajuste manualmente as últimas casas decimais do valor unitário do item de maior valor para bater o total exato.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td class="p-3.5 font-bold text-rose-600 dark:text-rose-400">
+                                            <i class="fa-solid fa-circle-exclamation mr-1.5"></i>
+                                            Cadastro não efetivado
+                                        </td>
+                                        <td class="p-3.5">Falta de preenchimento de campo obrigatório ou ausência de anexo legal.</td>
+                                        <td class="p-3.5">Revise todas as abas, verifique as mensagens no topo e confirme o envio de todos os arquivos exigidos.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td class="p-3.5 font-bold text-rose-600 dark:text-rose-400">
+                                            <i class="fa-solid fa-circle-exclamation mr-1.5"></i>
+                                            Migração Ausente / Erro Sistêmico Desconhecido
+                                        </td>
+                                        <td class="p-3.5">Falha na integração de dados do contrato de origem ou instabilidade no banco do PE-Integrado.</td>
+                                        <td class="p-3.5 font-bold text-red-700 dark:text-red-400">
+                                            NÃO CRIE REGISTRO DUPLICADO! Abra um chamado em suportecompras.pe.gov.br informando número do processo e print.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Opening Form Instructions Card -->
+                    <div class="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/40 dark:to-slate-900 border border-red-200 dark:border-red-900/50 p-6 rounded-xl space-y-4">
+                        <h3 class="font-bold text-red-900 dark:text-red-200 text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Como Abrir Chamado no Suporte Oficial PE-Integrado
+                        </h3>
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Caso o problema persistir ou o sistema apresentar falha de migração, acesse <a href="https://suportecompras.pe.gov.br" target="_blank" class="font-bold underline text-red-600 dark:text-red-400">suportecompras.pe.gov.br</a> e inclua as informações abaixo no formulário para garantir atendimento ágil:
+                        </p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
+                            <div class="bg-white dark:bg-slate-800 p-3 rounded-lg border border-red-200 dark:border-red-900/30">
+                                <span class="font-bold text-slate-900 dark:text-white block mb-1">1. Identificação</span>
+                                Tipo de registro (Contrato, Aditivo ou Apostilamento) e número do contrato/processo.
+                            </div>
+                            <div class="bg-white dark:bg-slate-800 p-3 rounded-lg border border-red-200 dark:border-red-900/30">
+                                <span class="font-bold text-slate-900 dark:text-white block mb-1">2. Etapa do Erro</span>
+                                Indicar a aba ou botão exato em que a falha ocorreu e a data/horário da ocorrência.
+                            </div>
+                            <div class="bg-white dark:bg-slate-800 p-3 rounded-lg border border-red-200 dark:border-red-900/30">
+                                <span class="font-bold text-slate-900 dark:text-white block mb-1">3. Evidências</span>
+                                Captura de tela (print) da mensagem de erro contendo o código de falha exibido.
+                            </div>
+                        </div>
+
+                        <div class="pt-2 text-center">
+                            <a href="https://suportecompras.pe.gov.br" target="_blank" class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow-md transition-all">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                Acessar Formulário de Chamados (suportecompras.pe.gov.br)
+                            </a>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- MODULE E: INTERACTIVE CHECKLIST -->
+                <section id="modulo-e" class="tab-content space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-4">
+                        <div>
+                            <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Módulo E</span>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Checklist Dinâmico de Validação Antes da Efetivação</h2>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-300 text-xs font-semibold">
+                            <i class="fa-solid fa-square-check"></i> Verificação Final
+                        </span>
+                    </div>
+
+                    <!-- Progress Bar Component -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-bold text-slate-900 dark:text-white text-base">Progresso da Conferência</h3>
+                                <p class="text-xs text-slate-500">Marque os itens à medida que revisar no PE-Integrado</p>
+                            </div>
+                            <span id="checklist-percentage" class="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                            <div id="checklist-progress-bar" class="bg-indigo-600 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+
+                    <!-- Checklist Items Interactive -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm space-y-4" id="checklist-container">
+                        
+                        <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/40 cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all">
+                            <input type="checkbox" class="checklist-item mt-1 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                            <div class="text-xs">
+                                <strong class="text-slate-900 dark:text-white block text-sm">1. Espécie do Instrumento e Origem</strong>
+                                Confirmei se o registro correto (Contrato Original, Empenho Substitutivo, Aditivo ou Apostilamento) foi selecionado no menu correspondente.
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/40 cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all">
+                            <input type="checkbox" class="checklist-item mt-1 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                            <div class="text-xs">
+                                <strong class="text-slate-900 dark:text-white block text-sm">2. Unidade Gestora e Partes Contratantes</strong>
+                                A Unidade Gestora selecionada corresponde exatamente à Secretaria responsável e os dados do contratado (CNPJ/CPF) estão conferidos.
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/40 cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all">
+                            <input type="checkbox" class="checklist-item mt-1 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                            <div class="text-xs">
+                                <strong class="text-slate-900 dark:text-white block text-sm">3. Vigência e Datas Legais</strong>
+                                Conferi as datas de início e encerramento e certifiquei-me de que não há inconsistência de interregno ou data retroativa não permitida.
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/40 cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all">
+                            <input type="checkbox" class="checklist-item mt-1 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                            <div class="text-xs">
+                                <strong class="text-slate-900 dark:text-white block text-sm">4. Planilha de Itens e Cálculos Financeiros</strong>
+                                Validei a correspondência entre os valores unitários, quantitativos e o valor global resultante (respeitando limites de 25% ou 50%).
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/40 cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all">
+                            <input type="checkbox" class="checklist-item mt-1 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                            <div class="text-xs">
+                                <strong class="text-slate-900 dark:text-white block text-sm">5. Saldo e Fonte de Dotação Orçamentária</strong>
+                                Verifiquei a disponibilidade orçamentária e anexei a reserva/nota de empenho complementar quando aplicável.
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/40 cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all">
+                            <input type="checkbox" class="checklist-item mt-1 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                            <div class="text-xs">
+                                <strong class="text-slate-900 dark:text-white block text-sm">6. Anexos e Legibilidade dos Documentos</strong>
+                                Todos os documentos legais (termo assinado, parecer jurídico PGE, memória de cálculo, publicações) foram inseridos em PDF legível.
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/40 cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all">
+                            <input type="checkbox" class="checklist-item mt-1 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                            <div class="text-xs">
+                                <strong class="text-slate-900 dark:text-white block text-sm">7. Status Final "Efetivado"</strong>
+                                Cliquei em Efetivar e verifiquei a mensagem de confirmação do sistema e a mudança de status do registro.
+                            </div>
+                        </label>
+
+                    </div>
+
+                    <!-- Reset Checklist Button -->
+                    <div class="flex justify-end">
+                        <button id="btn-reset-checklist" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-slate-600 rounded-lg">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Reiniciar Checklist
+                        </button>
+                    </div>
+
+                </section>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- MODAL POPUP FOR HOTSPOTS -->
+    <div id="hotspot-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+                <h3 id="modal-title" class="font-bold text-slate-900 dark:text-white text-base"></h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <p id="modal-body" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+            <div class="pt-2 flex justify-end">
+                <button onclick="closeModal()" class="px-4 py-1.5 bg-brand-600 text-white font-bold text-xs rounded-lg">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // DOM Elements
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const sidebar = document.getElementById('sidebar');
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const globalSearch = document.getElementById('global-search');
+        const errorFilter = document.getElementById('error-filter');
+        const errorTableBody = document.getElementById('error-table-body');
+        const checklistItems = document.querySelectorAll('.checklist-item');
+        const checklistProgressBar = document.getElementById('checklist-progress-bar');
+        const checklistPercentage = document.getElementById('checklist-percentage');
+        const btnResetChecklist = document.getElementById('btn-reset-checklist');
+        const readingProgress = document.getElementById('reading-progress');
+
+        // Theme Switcher Logic
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            if (document.documentElement.classList.contains('dark')) {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            }
+        });
+
+        // Mobile Sidebar Toggle
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        }
+        toggleSidebarBtn?.addEventListener('click', toggleSidebar);
+        sidebarOverlay?.addEventListener('click', toggleSidebar);
+
+        // Tab Switching Logic
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.getAttribute('data-tab');
+
+                navBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-brand-50', 'dark:bg-brand-950/40', 'text-brand-600', 'dark:text-brand-400');
+                    b.classList.add('text-slate-600', 'dark:text-slate-300');
+                });
+
+                btn.classList.add('active', 'bg-brand-50', 'dark:bg-brand-950/40', 'text-brand-600', 'dark:text-brand-400');
+
+                tabContents.forEach(content => {
+                    if (content.id === targetTab) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+
+                if (window.innerWidth < 768) {
+                    toggleSidebar();
+                }
+            });
+        });
+
+        // Interactive Checklist Logic
+        function updateChecklist() {
+            const total = checklistItems.length;
+            let checkedCount = 0;
+            checklistItems.forEach(item => {
+                if (item.checked) checkedCount++;
+            });
+            const percent = Math.round((checkedCount / total) * 100);
+            checklistProgressBar.style.width = `${percent}%`;
+            checklistPercentage.textContent = `${percent}%`;
+        }
+
+        checklistItems.forEach(item => {
+            item.addEventListener('change', updateChecklist);
+        });
+
+        btnResetChecklist?.addEventListener('click', () => {
+            checklistItems.forEach(item => item.checked = false);
+            updateChecklist();
+        });
+
+        // Error Filter Logic
+        errorFilter?.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const rows = errorTableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Global Search Logic
+        globalSearch?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const query = e.target.value.toLowerCase();
+                if (!query) return;
+
+                if (query.includes('aditivo') || query.includes('acréscimo') || query.includes('vigência')) {
+                    document.querySelector('[data-tab="modulo-b"]').click();
+                } else if (query.includes('apostila') || query.includes('reajuste') || query.includes('ipca')) {
+                    document.querySelector('[data-tab="modulo-c"]').click();
+                } else if (query.includes('erro') || query.includes('falha') || query.includes('suporte')) {
+                    document.querySelector('[data-tab="modulo-d"]').click();
+                } else if (query.includes('check') || query.includes('conclusão')) {
+                    document.querySelector('[data-tab="modulo-e"]').click();
+                } else {
+                    document.querySelector('[data-tab="modulo-a"]').click();
+                }
+            }
+        });
+
+        // Modal Hotspots
+        function showHotspotInfo(title, body) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-body').textContent = body;
+            document.getElementById('hotspot-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('hotspot-modal').classList.add('hidden');
+        }
+
+        // Reading Scroll Progress
+        const contentArea = document.getElementById('content-area');
+        contentArea.addEventListener('scroll', () => {
+            const scrollTop = contentArea.scrollTop;
+            const scrollHeight = contentArea.scrollHeight - contentArea.clientHeight;
+            const scrollPercent = (scrollTop / scrollHeight) * 100;
+            readingProgress.style.width = `${scrollPercent}%`;
+        });
+    </script>
+</body>
+</html>
